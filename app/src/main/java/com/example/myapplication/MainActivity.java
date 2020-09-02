@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
                         System.out.println("Succwssssssssssssssssssssssssss : " + response.toString());
 
                     }
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(), "Api Failed", Toast.LENGTH_SHORT).show();
                         System.out.println("Errorrrrrrrrrrrrrrrrrrrrrrrrr : " + error.toString());
                     }
                 }
