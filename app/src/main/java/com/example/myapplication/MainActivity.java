@@ -1,8 +1,9 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.view.View;
+import android.widget.ExpandableListAdapter;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,29 +15,71 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MainActivity extends AppCompatActivity {
+    List<String> coinList;
+    List<String> childList;
+    Map<String, List<String>> coinCollections;
+    ExpandableListView expandableListView;
+    ExpandableListAdapter expandableListAdapter;
+    List<CoinTO> coinDetails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        loadCourses();
-        System.out.println("========================================================================");
+        getDataFromApi();
+    }
+
+    private void loadChild(CoinTO coinTO) {
+        childList = new ArrayList<>();
+        childList.add(coinTO.getName());
+        childList.add(coinTO.getPrice() + "");
+    }
+
+    private void createCollections() {
+        coinCollections = new HashMap<>();
+        for (int i = 0; i < coinDetails.size(); i++) {
+            CoinTO coinTO = coinDetails.get(i);
+            loadChild(coinTO);
+            coinCollections.put(coinTO.getName(), childList);
+        }
+    }
+
+    void loadCoin() {
+        coinList = new ArrayList<>();
+        for (int i = 0; i < coinDetails.size(); i++) {
+            coinList.add(coinDetails.get(i).getName());
+        }
+    }
 
 
+    void getDataFromApi() {
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
-                "http://192.168.134.161:8080/RuleEngineUI/getGroupInfo",
+                "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=84a48d89-edce-4e92-8eb4-ea4cb906a37c",
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
-                        System.out.println("Succwssssssssssssssssssssssssss : " + response.toString());
-
+                        try {
+                            Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
+                            System.out.println("Succwssssssssssssssssssssssssss : " + response.toString());
+                            JSONObject reader = new JSONObject(response.toString());
+                            JSONArray data = reader.getJSONArray("data");
+                            setResponseAfterApiCall(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -50,15 +93,61 @@ public class MainActivity extends AppCompatActivity {
         requestQueue.add(objectRequest);
     }
 
-    void loadCourses() {
-        Spinner spinner = (Spinner) findViewById(R.id.planets_spinner);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.planets_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+
+    void setResponseAfterApiCall(String response) {
+        JSONObject reader = null;
+        List<CoinTO> list = null;
+        try {
+            reader = new JSONObject(response.toString());
+            JSONArray data = reader.getJSONArray("data");
+            list = new ArrayList<>();
+            for (int i = 0; i < data.length(); i++) {
+                JSONObject object = data.getJSONObject(i);
+                CoinTO coinTO = new CoinTO();
+                coinTO.setId(Integer.parseInt(object.get("id").toString()));
+                coinTO.setName(object.get("name").toString());
+                coinTO.setSymbol(object.get("symbol").toString());
+                coinTO.setSlug(object.get("slug").toString());
+                coinTO.setCmc_rank(Integer.parseInt(object.get("cmc_rank").toString()));
+                coinTO.setDate_added(object.get("date_added").toString());
+                coinTO.setLast_updated(object.get("last_updated").toString());
+                JSONObject quote = object.getJSONObject("quote");
+                JSONObject usd = quote.getJSONObject("USD");
+                coinTO.setPrice(Double.parseDouble(usd.get("price").toString()));
+
+                list.add(coinTO);
+            }
+            coinDetails = list;
+            loadCoin();
+            createCollections();
+            expandableListView = findViewById(R.id.expanded_menu);
+            expandableListAdapter = new MyExpandableListAdapter(this, coinList, coinCollections);
+            expandableListView.setAdapter(expandableListAdapter);
+            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+                int lastExpandedPosition = -1;
+
+                @Override
+                public void onGroupExpand(int i) {
+                    if (lastExpandedPosition != -1 && i != lastExpandedPosition) {
+                        expandableListView.collapseGroup(lastExpandedPosition);
+                    }
+                    lastExpandedPosition = i;
+                }
+            });
+
+            expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+                    String selected = expandableListAdapter.getChild(i, i1).toString();
+                    Toast.makeText(getApplicationContext(), "Selected : " + selected, Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+            });
+
+
+            System.out.println("Coin Info ==============================================:" + coinDetails.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
-
-
 }
