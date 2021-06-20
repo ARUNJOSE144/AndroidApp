@@ -144,6 +144,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            
+
 
             System.out.println("Coin Info ==============================================:" + coinDetails.toString());
         } catch (JSONException e) {
