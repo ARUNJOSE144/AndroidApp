@@ -9,17 +9,14 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.List;
-import java.util.Map;
 
 public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     Context context;
-    List<String> coinList;
-    Map<String, List<String>> collectionList;
+    List<CoinTO> coinTOList;
 
-    public MyExpandableListAdapter(Context context, List<String> coinList, Map<String, List<String>> collectionList) {
+    public MyExpandableListAdapter(Context context, List<CoinTO> coinTOList) {
         this.context = context;
-        this.coinList = coinList;
-        this.collectionList = collectionList;
+        this.coinTOList = coinTOList;
 
 
     }
@@ -27,23 +24,23 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return collectionList.size();
+        return coinTOList.size();
     }
 
     @Override
     public int getChildrenCount(int i) {
-        return collectionList.get(coinList.get(i)).size();
+        return 3;
     }
 
     @Override
     public Object getGroup(int i) {
-        return coinList.get(i);
+        return coinTOList.get(i);
     }
 
     @Override
     public Object getChild(int i, int i1) {
 
-        return collectionList.get(coinList.get(i)).get(i1);
+        return coinTOList.get(i);
     }
 
     @Override
@@ -65,27 +62,36 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int i, boolean b, View view, ViewGroup viewGroup) {
-        String coinName = getGroup(i).toString();
+        CoinTO coin = coinTOList.get(i);
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.coin_item, null);
         }
         TextView item = view.findViewById(R.id.coin);
         item.setTypeface(null, Typeface.BOLD);
-        item.setText(coinName);
+        item.setText(coin.getName() + "  -  " + coin.getPrice());
+
         return view;
     }
 
     @Override
     public View getChildView(int i, int i1, boolean b, View view, ViewGroup viewGroup) {
-        String info = getChild(i, i1).toString();
+        System.out.println(i1);
+        CoinTO coin = coinTOList.get(i);
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.coin_details, null);
         }
 
         TextView item = view.findViewById(R.id.details);
-        item.setText(info);
+
+        if (i1 == 0)
+            item.setText("Id : " + coin.getId());
+        if (i1 == 1)
+            item.setText("Last Updated : " + coin.getLast_updated());
+        if (i1 == 2)
+            item.setText("Symbol : " + coin.getSymbol());
+
         return view;
     }
 

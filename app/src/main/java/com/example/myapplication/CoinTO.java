@@ -8,7 +8,7 @@ public class CoinTO {
     private String date_added;
     private int cmc_rank;
     private String last_updated;
-    private Double price;
+    private String price;
 
 
     public int getId() {
@@ -67,11 +67,11 @@ public class CoinTO {
         this.last_updated = last_updated;
     }
 
-    public Double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

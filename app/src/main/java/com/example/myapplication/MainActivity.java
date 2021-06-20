@@ -1,9 +1,12 @@
 package com.example.myapplication;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,30 +22,62 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
+    int last_refresed = 0;
     List<String> coinList;
     List<String> childList;
     Map<String, List<String>> coinCollections;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
+    Double DollerInINR = 74.14;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getDataFromApi();
+        final Handler handler = new Handler();
+
+        //Created Thread for Calling the API in multiple times
+        final Runnable r = new Runnable() {
+            public void run() {
+                getDataFromApi();
+                last_refresed = 0;
+                handler.postDelayed(this, 300000);
+            }
+        };
+
+        final Runnable lastUpdatedTime = new Runnable() {
+            public void run() {
+                last_refresed++;
+                TextView item = (TextView) findViewById(R.id.last_refreshed);
+                item.setTypeface(null, Typeface.BOLD);
+                item.setText("Last Updated in " + last_refresed + " Sec");
+                handler.postDelayed(this, 1000);
+            }
+        };
+
+        handler.postDelayed(lastUpdatedTime, 1000);
+        handler.postDelayed(r, 1);
     }
 
     private void loadChild(CoinTO coinTO) {
         childList = new ArrayList<>();
         childList.add(coinTO.getName());
         childList.add(coinTO.getPrice() + "");
+        childList.add(coinTO.getId() + "");
+        childList.add(coinTO.getCmc_rank() + "");
+        childList.add(coinTO.getLast_updated() + "");
+        childList.add(coinTO.getSymbol() + "");
+
     }
 
     private void createCollections() {
@@ -113,7 +148,12 @@ public class MainActivity extends AppCompatActivity {
                 coinTO.setLast_updated(object.get("last_updated").toString());
                 JSONObject quote = object.getJSONObject("quote");
                 JSONObject usd = quote.getJSONObject("USD");
-                coinTO.setPrice(Double.parseDouble(usd.get("price").toString()));
+
+                DecimalFormat df = new DecimalFormat("#.###");
+                df.setRoundingMode(RoundingMode.CEILING);
+
+                Double finalPrice = Double.parseDouble(usd.get("price").toString()) * DollerInINR;
+                coinTO.setPrice(df.format(finalPrice));
 
                 list.add(coinTO);
             }
@@ -121,9 +161,9 @@ public class MainActivity extends AppCompatActivity {
             loadCoin();
             createCollections();
             expandableListView = findViewById(R.id.expanded_menu);
-            expandableListAdapter = new MyExpandableListAdapter(this, coinList, coinCollections);
+            expandableListAdapter = new MyExpandableListAdapter(this, coinDetails);
             expandableListView.setAdapter(expandableListAdapter);
-            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            /*expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 int lastExpandedPosition = -1;
 
                 @Override
@@ -133,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     lastExpandedPosition = i;
                 }
-            });
+            });*/
 
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
