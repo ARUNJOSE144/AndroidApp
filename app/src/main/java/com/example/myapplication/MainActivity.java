@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
+    MediaPlayer mp;
 
 
     @Override
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
+
+        mp = MediaPlayer.create(this, R.raw.beep);
 
         //Created Thread for Calling the API in multiple times
         final Runnable r = new Runnable() {
@@ -98,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     void getDataFromApi() {
+        mp.start();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
