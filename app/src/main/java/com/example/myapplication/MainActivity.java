@@ -28,7 +28,6 @@ import org.json.JSONObject;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
+    
 
 
     @Override
@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
-
 
         //Created Thread for Calling the API in multiple times
         final Runnable r = new Runnable() {
@@ -73,36 +72,7 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(r, 1);
     }
 
-    private void loadChild(CoinTO coinTO) {
-        childList = new ArrayList<>();
-        childList.add(coinTO.getName());
-        childList.add(coinTO.getPrice() + "");
-        childList.add(coinTO.getId() + "");
-        childList.add(coinTO.getCmc_rank() + "");
-        childList.add(coinTO.getLast_updated() + "");
-        childList.add(coinTO.getSymbol() + "");
-
-    }
-
-    private void createCollections() {
-        coinCollections = new HashMap<>();
-        for (int i = 0; i < coinDetails.size(); i++) {
-            CoinTO coinTO = coinDetails.get(i);
-            loadChild(coinTO);
-            coinCollections.put(coinTO.getName(), childList);
-        }
-    }
-
-    void loadCoin() {
-        coinList = new ArrayList<>();
-        for (int i = 0; i < coinDetails.size(); i++) {
-            coinList.add(coinDetails.get(i).getName());
-        }
-    }
-
-
     void getDataFromApi() {
-
         alert();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
@@ -126,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Api Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                         System.out.println("Errorrrrrrrrrrrrrrrrrrrrrrrrr : " + error.toString());
                     }
                 }
@@ -164,8 +134,6 @@ public class MainActivity extends AppCompatActivity {
                 list.add(coinTO);
             }
             coinDetails = list;
-            loadCoin();
-            createCollections();
             expandableListView = findViewById(R.id.expanded_menu);
             expandableListAdapter = new MyExpandableListAdapter(this, coinDetails);
             expandableListView.setAdapter(expandableListAdapter);
@@ -190,8 +158,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-
-            System.out.println("Coin Info ==============================================:" + coinDetails.toString());
         } catch (JSONException e) {
             e.printStackTrace();
         }

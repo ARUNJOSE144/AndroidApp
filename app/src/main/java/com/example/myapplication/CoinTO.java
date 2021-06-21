@@ -10,6 +10,9 @@ public class CoinTO {
     private String last_updated;
     private String price;
 
+    private String minPrice;
+    private String maxPrice;
+
 
     public int getId() {
         return id;
@@ -75,6 +78,22 @@ public class CoinTO {
         this.price = price;
     }
 
+    public String getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(String minPrice) {
+        this.minPrice = minPrice;
+    }
+
+    public String getMaxPrice() {
+        return maxPrice;
+    }
+
+    public void setMaxPrice(String maxPrice) {
+        this.maxPrice = maxPrice;
+    }
+
     @Override
     public String toString() {
         return "CoinTO{" +
@@ -86,6 +105,8 @@ public class CoinTO {
                 ", cmc_rank=" + cmc_rank +
                 ", last_updated='" + last_updated + '\'' +
                 ", price='" + price + '\'' +
+                ", minPrice='" + minPrice + '\'' +
+                ", maxPrice='" + maxPrice + '\'' +
                 '}';
     }
 }
