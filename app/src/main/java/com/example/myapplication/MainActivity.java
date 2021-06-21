@@ -1,9 +1,11 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -39,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
-    MediaPlayer mp;
 
 
     @Override
@@ -48,14 +49,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
 
-        mp = MediaPlayer.create(this, R.raw.beep);
 
         //Created Thread for Calling the API in multiple times
         final Runnable r = new Runnable() {
             public void run() {
                 getDataFromApi();
                 last_refresed = 0;
-                handler.postDelayed(this, 300000);
+                handler.postDelayed(this, 5000);
             }
         };
 
@@ -102,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     void getDataFromApi() {
-        mp.start();
+
+        alert();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -194,5 +195,14 @@ public class MainActivity extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+
+    void alert() {
+        MediaPlayer mp;
+        mp = MediaPlayer.create(this, R.raw.beep);
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(2000);
+        mp.start();
     }
 }
