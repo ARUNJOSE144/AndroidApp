@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
+    int refreshInSeconds = 300;
 
     List<CoinTO> monitoringCoins;
 
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 getDataFromApi();
                 last_refresed = 0;
-                handler.postDelayed(this, 500000);
+                handler.postDelayed(this, refreshInSeconds * 1000);
             }
         };
 
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     void setResponseAfterApiCall(String response) {
         JSONObject reader = null;
         List<CoinTO> list = null;
+
         try {
             reader = new JSONObject(response.toString());
             JSONArray data = reader.getJSONArray("data");
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Double finalPrice = Double.parseDouble(usd.get("price").toString()) * DollerInINR;
                 coinTO.setPrice(df.format(finalPrice));
+
 
                 list.add(coinTO);
             }
@@ -176,21 +179,6 @@ public class MainActivity extends AppCompatActivity {
         mp.start();
     }
 
-    void setMonitoringCoinDetails() {
-        monitoringCoins = new ArrayList<>();
-
-        CoinTO coinTO1 = new CoinTO();
-        coinTO1.setId(825);
-        coinTO1.setMinPrice("10");
-        coinTO1.setMaxPrice("20");
-        monitoringCoins.add(coinTO1);
-
-        CoinTO coinTO2 = new CoinTO();
-        coinTO2.setId(1);
-        coinTO2.setMinPrice("10");
-        coinTO2.setMaxPrice("20");
-        monitoringCoins.add(coinTO2);
-    }
 
     CoinTO isPresentInMonitoringList(int id) {
         CoinTO coinTO = null;
@@ -205,6 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     List<CoinTO> sortList(List<CoinTO> list) {
         List<CoinTO> sortedList = new ArrayList<>();
+        boolean activeAlert = false;
 
         for (CoinTO coinTO : list) {
             CoinTO monitoringTo = isPresentInMonitoringList(coinTO.getId());
@@ -213,12 +202,41 @@ public class MainActivity extends AppCompatActivity {
                 coinTO.setMaxPrice(monitoringTo.getMaxPrice());
                 coinTO.setMinPrice(monitoringTo.getMinPrice());
                 sortedList.add(0, coinTO);
+
+                //check for alert
+                Double price = Double.parseDouble(coinTO.getPrice());
+                Double minPrice = Double.parseDouble(coinTO.getMinPrice());
+                Double maxPrice = Double.parseDouble(coinTO.getMaxPrice());
+                if (price <= minPrice || price >= maxPrice) {
+                    activeAlert = true;
+                }
             } else {
                 coinTO.setMonitoringCoin(false);
                 sortedList.add(coinTO);
             }
         }
 
+        if (activeAlert) {
+            alert();
+        }
         return sortedList;
     }
+
+    void setMonitoringCoinDetails() {
+        monitoringCoins = new ArrayList<>();
+
+        CoinTO coinTO1 = new CoinTO();
+        coinTO1.setId(74);
+        coinTO1.setMinPrice("15");
+        coinTO1.setMaxPrice("16");
+        monitoringCoins.add(coinTO1);
+
+        CoinTO coinTO2 = new CoinTO();
+        coinTO2.setId(1);
+        coinTO2.setMinPrice("20000");
+        coinTO2.setMaxPrice("3000000");
+        monitoringCoins.add(coinTO2);
+    }
 }
+
+

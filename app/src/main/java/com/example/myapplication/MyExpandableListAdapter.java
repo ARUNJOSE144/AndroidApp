@@ -30,7 +30,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int i) {
-        return 3;
+        return 5;
     }
 
     @Override
@@ -69,20 +69,25 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.coin_item, null);
         }
         TextView item = view.findViewById(R.id.coin);
-
-
         item.setText(coin.getName() + "  -  " + coin.getPrice());
         if (coin.isMonitoringCoin()) {
-            System.out.println("1111111111111111111111111111");
             item.setTypeface(null, Typeface.BOLD);
-            //item.setTextColor(Color.GREEN);
+            item.setTextColor(Color.BLACK);
+
+            //check for alert
+            Double price = Double.parseDouble(coin.getPrice());
+            Double minPrice = Double.parseDouble(coin.getMinPrice());
+            Double maxPrice = Double.parseDouble(coin.getMaxPrice());
+            if (price <= minPrice) {
+                item.setTextColor(Color.RED);
+            } else if (price >= maxPrice) {
+                item.setTextColor(Color.GREEN);
+            }
+
+        } else {
+            item.setTypeface(null, Typeface.NORMAL);
+            item.setTextColor(Color.BLACK);
         }
-
-      /*  if (coin.isMonitoringCoin())
-            System.out.println("1111111111111111111111111111");
-        else
-            System.out.println("000000000000000000000000000000000000000000000000");*/
-
         return view;
     }
 
@@ -98,11 +103,15 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         TextView item = view.findViewById(R.id.details);
 
         if (i1 == 0)
-            item.setText("Id : " + coin.getId());
+            item.setText("                  Id : " + coin.getId());
         if (i1 == 1)
-            item.setText("Last Updated : " + coin.getLast_updated());
+            item.setText("                  Last Updated : " + coin.getLast_updated());
         if (i1 == 2)
-            item.setText("Symbol : " + coin.getSymbol());
+            item.setText("                  Symbol : " + coin.getSymbol());
+        if (i1 == 3)
+            item.setText("                  Min : " + coin.getMinPrice());
+        if (i1 == 4)
+            item.setText("                  Max : " + coin.getMaxPrice());
 
         return view;
     }
