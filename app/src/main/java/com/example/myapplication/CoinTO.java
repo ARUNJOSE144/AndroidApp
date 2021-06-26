@@ -10,6 +10,7 @@ public class CoinTO {
     private String last_updated;
     private String price;
 
+    private boolean isMonitoringCoin;
     private String minPrice;
     private String maxPrice;
 
@@ -94,6 +95,14 @@ public class CoinTO {
         this.maxPrice = maxPrice;
     }
 
+    public boolean isMonitoringCoin() {
+        return isMonitoringCoin;
+    }
+
+    public void setMonitoringCoin(boolean monitoringCoin) {
+        isMonitoringCoin = monitoringCoin;
+    }
+
     @Override
     public String toString() {
         return "CoinTO{" +
@@ -105,6 +114,7 @@ public class CoinTO {
                 ", cmc_rank=" + cmc_rank +
                 ", last_updated='" + last_updated + '\'' +
                 ", price='" + price + '\'' +
+                ", isMonitoringCoin=" + isMonitoringCoin +
                 ", minPrice='" + minPrice + '\'' +
                 ", maxPrice='" + maxPrice + '\'' +
                 '}';

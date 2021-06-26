@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
-    
+
+    List<CoinTO> monitoringCoins;
 
 
     @Override
@@ -48,13 +49,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
+        setMonitoringCoinDetails();
 
         //Created Thread for Calling the API in multiple times
         final Runnable r = new Runnable() {
             public void run() {
                 getDataFromApi();
                 last_refresed = 0;
-                handler.postDelayed(this, 5000);
+                handler.postDelayed(this, 500000);
             }
         };
 
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getDataFromApi() {
-        alert();
+        //alert();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
@@ -133,7 +135,9 @@ public class MainActivity extends AppCompatActivity {
 
                 list.add(coinTO);
             }
-            coinDetails = list;
+
+
+            coinDetails = sortList(list);
             expandableListView = findViewById(R.id.expanded_menu);
             expandableListAdapter = new MyExpandableListAdapter(this, coinDetails);
             expandableListView.setAdapter(expandableListAdapter);
@@ -170,5 +174,51 @@ public class MainActivity extends AppCompatActivity {
         Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         v.vibrate(2000);
         mp.start();
+    }
+
+    void setMonitoringCoinDetails() {
+        monitoringCoins = new ArrayList<>();
+
+        CoinTO coinTO1 = new CoinTO();
+        coinTO1.setId(825);
+        coinTO1.setMinPrice("10");
+        coinTO1.setMaxPrice("20");
+        monitoringCoins.add(coinTO1);
+
+        CoinTO coinTO2 = new CoinTO();
+        coinTO2.setId(1);
+        coinTO2.setMinPrice("10");
+        coinTO2.setMaxPrice("20");
+        monitoringCoins.add(coinTO2);
+    }
+
+    CoinTO isPresentInMonitoringList(int id) {
+        CoinTO coinTO = null;
+        for (CoinTO to : monitoringCoins) {
+            if (to.getId() == id) {
+                return to;
+            }
+
+        }
+        return coinTO;
+    }
+
+    List<CoinTO> sortList(List<CoinTO> list) {
+        List<CoinTO> sortedList = new ArrayList<>();
+
+        for (CoinTO coinTO : list) {
+            CoinTO monitoringTo = isPresentInMonitoringList(coinTO.getId());
+            if (monitoringTo != null) {
+                coinTO.setMonitoringCoin(true);
+                coinTO.setMaxPrice(monitoringTo.getMaxPrice());
+                coinTO.setMinPrice(monitoringTo.getMinPrice());
+                sortedList.add(0, coinTO);
+            } else {
+                coinTO.setMonitoringCoin(false);
+                sortedList.add(coinTO);
+            }
+        }
+
+        return sortedList;
     }
 }

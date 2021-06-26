@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,8 +69,19 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
             view = inflater.inflate(R.layout.coin_item, null);
         }
         TextView item = view.findViewById(R.id.coin);
-        item.setTypeface(null, Typeface.BOLD);
+
+
         item.setText(coin.getName() + "  -  " + coin.getPrice());
+        if (coin.isMonitoringCoin()) {
+            System.out.println("1111111111111111111111111111");
+            item.setTypeface(null, Typeface.BOLD);
+            //item.setTextColor(Color.GREEN);
+        }
+
+      /*  if (coin.isMonitoringCoin())
+            System.out.println("1111111111111111111111111111");
+        else
+            System.out.println("000000000000000000000000000000000000000000000000");*/
 
         return view;
     }
