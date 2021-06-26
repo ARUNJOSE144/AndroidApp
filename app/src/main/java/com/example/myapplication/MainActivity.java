@@ -228,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         CoinTO coinTO1 = new CoinTO();
         coinTO1.setId(74);
         coinTO1.setMinPrice("15");
-        coinTO1.setMaxPrice("16");
+        coinTO1.setMaxPrice("20");
         monitoringCoins.add(coinTO1);
 
         CoinTO coinTO2 = new CoinTO();
