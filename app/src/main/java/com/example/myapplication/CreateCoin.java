@@ -77,6 +77,7 @@ public class CreateCoin extends AppCompatActivity {
 
     public void Create() {
         DB = new DBHelper(this);
+
         boolean stat = DB.inserCoinData(getRequest());
         if (stat) {
             /*Intent intent = new Intent(this, MainActivity.class);

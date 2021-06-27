@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,7 +15,8 @@ import java.util.List;
 
 public class PropertyActivity extends AppCompatActivity {
     DBHelper DB;
-    EditText DollerInINR, refreshInSeconds, debugMode;
+    EditText DollerInINR, refreshInSeconds;
+    Switch debugSwitch;
     Button cancelButton, updateAllButton;
 
     @Override
@@ -50,7 +52,7 @@ public class PropertyActivity extends AppCompatActivity {
         DB = new DBHelper(this);
         DollerInINR = (EditText) findViewById(R.id.DollerInINR);
         refreshInSeconds = (EditText) findViewById(R.id.refreshInSeconds);
-        debugMode = (EditText) findViewById(R.id.debugMode);
+        debugSwitch = (Switch) findViewById(R.id.debugModeSwitch);
 
         List<Property> properties = DB.getAllProperty();
         for (Property property : properties) {
@@ -59,7 +61,10 @@ public class PropertyActivity extends AppCompatActivity {
             } else if (property.getName().equalsIgnoreCase("refreshInSeconds")) {
                 refreshInSeconds.setText(property.getValue());
             } else if (property.getName().equalsIgnoreCase("debugMode")) {
-                debugMode.setText(property.getValue());
+                if (property.getValue().equalsIgnoreCase("true"))
+                    debugSwitch.setChecked(true);
+                else
+                    debugSwitch.setChecked(false);
             }
         }
 
@@ -70,7 +75,7 @@ public class PropertyActivity extends AppCompatActivity {
         DB = new DBHelper(this);
         DollerInINR = (EditText) findViewById(R.id.DollerInINR);
         refreshInSeconds = (EditText) findViewById(R.id.refreshInSeconds);
-        debugMode = (EditText) findViewById(R.id.debugMode);
+        debugSwitch = (Switch) findViewById(R.id.debugModeSwitch);
 
         List<Property> properties = new ArrayList<>();
 
@@ -84,10 +89,12 @@ public class PropertyActivity extends AppCompatActivity {
         refreshInSecondsProperty.setValue(refreshInSeconds.getText().toString());
         properties.add(refreshInSecondsProperty);
 
-        Property debugModeProperty = new Property();
-        debugModeProperty.setName("debugMode");
-        debugModeProperty.setValue(debugMode.getText().toString());
-        properties.add(debugModeProperty);
+        Property debugSwitchModeProperty = new Property();
+        debugSwitchModeProperty.setName("debugMode");
+        debugSwitchModeProperty.setValue(debugSwitch.isChecked() ? "true" : "false");
+        properties.add(debugSwitchModeProperty);
+
+
         DB.deleteAllProperty();
         boolean stat = DB.inserAllProps(properties);
         if (stat) {

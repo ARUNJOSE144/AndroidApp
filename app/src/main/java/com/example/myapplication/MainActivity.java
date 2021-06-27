@@ -50,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
-        LoadProps();
-        setMonitoringCoinDetails();
 
         //Created Thread for Calling the API in multiple times
         final Runnable r = new Runnable() {
@@ -113,7 +111,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void getDataFromApi() {
-        //alert();
+        LoadProps();
+        setMonitoringCoinDetails();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,

@@ -9,42 +9,41 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="134dp"
-        android:layout_height="15dp"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
         android:layout_above="@+id/refreshInSeconds1"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="38dp"
-        android:layout_marginTop="159dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="80dp"
         android:layout_toStartOf="@+id/DollerInINR"
         android:text="Doller In INR"
         android:textAlignment="center" />
 
     <EditText
         android:id="@+id/DollerInINR"
-        android:layout_width="178dp"
-        android:layout_height="43dp"
+        android:layout_width="101dp"
+        android:layout_height="52dp"
         android:layout_above="@+id/refreshInSeconds"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="125dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="48dp"
         android:hint="Id"
         android:inputType="textPersonName" />
-
 
     <TextView
         android:id="@+id/refreshInSeconds1"
         android:layout_width="145dp"
         android:layout_height="16dp"
-        android:layout_above="@+id/debugMode1"
+        android:layout_above="@+id/debugModeSwitch"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="29dp"
-        android:layout_marginEnd="29dp"
-        android:layout_marginBottom="89dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="14dp"
         android:layout_toStartOf="@+id/refreshInSeconds"
         android:text="Refresh In Seconds"
         android:textAlignment="center" />
@@ -53,38 +52,23 @@
         android:id="@+id/refreshInSeconds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/debugMode"
+        android:layout_above="@+id/debugModeSwitch"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="42dp"
-        android:layout_marginBottom="45dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="13dp"
         android:hint="Refresh In Seconds"
         android:inputType="textPersonName"
         android:text="" />
 
-    <TextView
-        android:id="@+id/debugMode1"
-        android:layout_width="145dp"
-        android:layout_height="16dp"
+    <Switch
+        android:id="@+id/debugModeSwitch"
+        android:layout_width="263dp"
+        android:layout_height="46dp"
         android:layout_above="@+id/cancelPropsButton"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="26dp"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="142dp"
-        android:layout_toStartOf="@+id/debugMode"
-        android:text="Debug Mode"
-        android:textAlignment="center" />
-
-    <EditText
-        android:id="@+id/debugMode"
-        android:layout_width="166dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/updateAllPropsButton"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="37dp"
-        android:layout_marginBottom="130dp"
-        android:hint="Debug Mode"
-        android:inputType="textPersonName"
-        android:text="" />
+        android:layout_marginEnd="67dp"
+        android:layout_marginBottom="203dp"
+        android:text="Debug" />
 
     <Button
         android:id="@+id/cancelPropsButton"
