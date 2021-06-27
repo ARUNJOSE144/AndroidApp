@@ -8,6 +8,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBHelper extends SQLiteOpenHelper {
     public DBHelper(Context context) {
         super(context, "Coin.db", null, 1);
@@ -74,10 +77,20 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public Cursor getCoinData(CoinTO coinTO) {
+    public List<CoinTO> getCoinData() {
+        List<CoinTO> list = new ArrayList<>();
         SQLiteDatabase DB = this.getWritableDatabase();
         Cursor cursor = DB.rawQuery("Select *  from CoinDetails", null);
-        return cursor;
+        while (cursor.moveToNext()) {
+            CoinTO coin = new CoinTO();
+            coin.setId(Integer.parseInt(cursor.getString(0)));
+            coin.setName(cursor.getString(1));
+            coin.setMinPrice(cursor.getString(2));
+            coin.setMaxPrice(cursor.getString(3));
+            list.add(coin);
+        }
+
+        return list;
     }
 
 }

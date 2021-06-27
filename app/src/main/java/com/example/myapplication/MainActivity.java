@@ -1,12 +1,14 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -40,10 +42,12 @@ public class MainActivity extends AppCompatActivity {
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
-    int refreshInSeconds = 300;
+    int refreshInSeconds = 100;
+    DBHelper DB;
 
     List<CoinTO> monitoringCoins;
 
+    Button goToCreateCoinButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,6 @@ public class MainActivity extends AppCompatActivity {
         final Runnable r = new Runnable() {
             public void run() {
                 getDataFromApi();
-                last_refresed = 0;
                 handler.postDelayed(this, refreshInSeconds * 1000);
             }
         };
@@ -71,8 +74,23 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
+        goToCreateCoinButton = (Button) findViewById(R.id.goToCreateCoin);
+        goToCreateCoinButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCreateCoinPage();
+            }
+        });
+
         handler.postDelayed(lastUpdatedTime, 1000);
         handler.postDelayed(r, 1);
+
+
+    }
+
+    public void openCreateCoinPage() {
+        Intent intent = new Intent(this, CreateCoin.class);
+        startActivity(intent);
     }
 
     void getDataFromApi() {
@@ -86,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
+                            last_refresed = 0;
                             Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
                             System.out.println("Succwssssssssssssssssssssssssss : " + response.toString());
                             JSONObject reader = new JSONObject(response.toString());
@@ -224,18 +243,9 @@ public class MainActivity extends AppCompatActivity {
 
     void setMonitoringCoinDetails() {
         monitoringCoins = new ArrayList<>();
+        DB = new DBHelper(this);
+        monitoringCoins = DB.getCoinData();
 
-        CoinTO coinTO1 = new CoinTO();
-        coinTO1.setId(74);
-        coinTO1.setMinPrice("15");
-        coinTO1.setMaxPrice("20");
-        monitoringCoins.add(coinTO1);
-
-        CoinTO coinTO2 = new CoinTO();
-        coinTO2.setId(1);
-        coinTO2.setMinPrice("20000");
-        coinTO2.setMaxPrice("3000000");
-        monitoringCoins.add(coinTO2);
     }
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,35 +11,45 @@
         android:id="@+id/last_refreshed"
         android:layout_width="301dp"
         android:layout_height="25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="67dp"
         android:layout_marginTop="4dp"
-        android:layout_weight="1"
+        android:layout_marginEnd="43dp"
         android:text="Last Updated in 0 Sec"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.409"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        android:textAlignment="center" />
 
     <ExpandableListView
         android:id="@+id/expanded_menu"
-        android:layout_width="411dp"
-        android:layout_height="709dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/last_refreshed"
-        app:layout_constraintVertical_bias="0.0"></ExpandableListView>
+        android:layout_width="match_parent"
+        android:layout_height="678dp"
+        android:layout_below="@+id/last_refreshed"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="0dp" />
+
 
     <TextView
         android:id="@+id/powerdBy"
         android:layout_width="301dp"
         android:layout_height="25dp"
-        android:layout_weight="1"
+        android:layout_below="@+id/expanded_menu"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="38dp"
         android:text="Powered By Inno Solutions"
-        android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/expanded_menu" />
+        android:textAlignment="center" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/goToCreateCoin"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="0dp"
+        android:text="New Coin" />
+
+
+</RelativeLayout>
