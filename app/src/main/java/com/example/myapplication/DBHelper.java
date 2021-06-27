@@ -19,12 +19,14 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase DB) {
         DB.execSQL("create Table CoinDetails(id TEXT primary key,name TEXT,min TEXT,max TEXT)");
+        DB.execSQL("create Table PropertyDetails(name TEXT primary key,value TEXT)");
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase DB, int i, int i1) {
         DB.execSQL("drop table if exists CoinDetails");
+        DB.execSQL("drop table if exists PropertyDetails");
     }
 
     public boolean inserCoinData(CoinTO coinTO) {
@@ -92,5 +94,42 @@ public class DBHelper extends SQLiteOpenHelper {
 
         return list;
     }
+
+
+    public boolean inserAllProps(List<Property> list) {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        boolean stat = false;
+        for (Property property : list) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("name", property.getName());
+            contentValues.put("value", property.getValue());
+            long result = DB.insert("PropertyDetails", null, contentValues);
+        }
+        stat = true;
+        return stat;
+    }
+
+    public boolean deleteAllProperty() {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        long result = DB.delete("PropertyDetails", null, null);
+        if (result == -1)
+            return false;
+        else
+            return true;
+    }
+
+    public List<Property> getAllProperty() {
+        List<Property> list = new ArrayList<>();
+        SQLiteDatabase DB = this.getWritableDatabase();
+        Cursor cursor = DB.rawQuery("Select *  from PropertyDetails", null);
+        while (cursor.moveToNext()) {
+            Property property = new Property();
+            property.setName(cursor.getString(0));
+            property.setValue(cursor.getString(1));
+            list.add(property);
+        }
+        return list;
+    }
+
 
 }

@@ -35,25 +35,22 @@ import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     int last_refresed = 0;
-    List<String> coinList;
-    List<String> childList;
-    Map<String, List<String>> coinCollections;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
     int refreshInSeconds = 100;
     DBHelper DB;
-
     List<CoinTO> monitoringCoins;
-
-    Button goToCreateCoinButton;
+    Button goToCreateCoinButton, goToProps, refreshButton;
+    boolean debugMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Handler handler = new Handler();
+        LoadProps();
         setMonitoringCoinDetails();
 
         //Created Thread for Calling the API in multiple times
@@ -63,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 handler.postDelayed(this, refreshInSeconds * 1000);
             }
         };
+
 
         final Runnable lastUpdatedTime = new Runnable() {
             public void run() {
@@ -82,6 +80,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        goToProps = (Button) findViewById(R.id.propsButton);
+        goToProps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openPropsPage();
+            }
+        });
+
+        refreshButton = (Button) findViewById(R.id.refresh);
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getDataFromApi();
+            }
+        });
+
         handler.postDelayed(lastUpdatedTime, 1000);
         handler.postDelayed(r, 1);
 
@@ -90,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void openCreateCoinPage() {
         Intent intent = new Intent(this, CreateCoin.class);
+        startActivity(intent);
+    }
+
+    public void openPropsPage() {
+        Intent intent = new Intent(this, PropertyActivity.class);
         startActivity(intent);
     }
 
@@ -105,8 +124,9 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         try {
                             last_refresed = 0;
-                            Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
-                            System.out.println("Succwssssssssssssssssssssssssss : " + response.toString());
+                            if (debugMode) {
+                                Toast.makeText(getApplicationContext(), "Api Sucess", Toast.LENGTH_LONG).show();
+                            }
                             JSONObject reader = new JSONObject(response.toString());
                             JSONArray data = reader.getJSONArray("data");
                             setResponseAfterApiCall(response.toString());
@@ -118,8 +138,9 @@ public class MainActivity extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
-                        System.out.println("Errorrrrrrrrrrrrrrrrrrrrrrrrr : " + error.toString());
+                        if (debugMode) {
+                            Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
         );
@@ -246,6 +267,24 @@ public class MainActivity extends AppCompatActivity {
         DB = new DBHelper(this);
         monitoringCoins = DB.getCoinData();
 
+    }
+
+    void LoadProps() {
+        DB = new DBHelper(this);
+        List<Property> properties = DB.getAllProperty();
+        for (Property property : properties) {
+            if (property.getName().equalsIgnoreCase("DollerInINR")) {
+                DollerInINR = Double.parseDouble(property.getValue().toString());
+            } else if (property.getName().equalsIgnoreCase("refreshInSeconds")) {
+                refreshInSeconds = Integer.parseInt(property.getValue().toString());
+            } else if (property.getName().equalsIgnoreCase("debugMode")) {
+                if (property.getValue().equalsIgnoreCase("true"))
+                    debugMode = true;
+                else
+                    debugMode = false;
+
+            }
+        }
     }
 }
 

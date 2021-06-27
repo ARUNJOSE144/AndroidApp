@@ -79,8 +79,9 @@ public class CreateCoin extends AppCompatActivity {
         DB = new DBHelper(this);
         boolean stat = DB.inserCoinData(getRequest());
         if (stat) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            /*Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);*/
+            Toast.makeText(getApplicationContext(), "Created", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Create Failed", Toast.LENGTH_LONG).show();
         }
@@ -90,8 +91,9 @@ public class CreateCoin extends AppCompatActivity {
         DB = new DBHelper(this);
         boolean stat = DB.updateCoinData(getRequest());
         if (stat) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+           /* Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);*/
+            Toast.makeText(getApplicationContext(), "Updated", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Update Failed", Toast.LENGTH_LONG).show();
         }
@@ -101,8 +103,9 @@ public class CreateCoin extends AppCompatActivity {
         DB = new DBHelper(this);
         boolean stat = DB.deleteCoinData(getRequest());
         if (stat) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+          /*  Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);*/
+            Toast.makeText(getApplicationContext(), "Deleted", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(getApplicationContext(), "Delete Failed", Toast.LENGTH_LONG).show();
         }

@@ -126,7 +126,8 @@
         android:layout_marginEnd="34dp"
         android:layout_marginBottom="-124dp"
         android:layout_toStartOf="@+id/addButton"
-        android:text="Cancel" />
+        android:text="Cancel"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/addButton"
