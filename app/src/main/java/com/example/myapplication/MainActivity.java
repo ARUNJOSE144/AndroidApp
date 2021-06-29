@@ -34,7 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    int last_refresed = 0;
+    int last_refresed = 0, totalAttemts = 0, successCount = 0, failedCount = 0, expectedAttempts = 0, totalTime = 0;
+
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<CoinTO> coinDetails;
@@ -63,9 +64,16 @@ public class MainActivity extends AppCompatActivity {
         final Runnable lastUpdatedTime = new Runnable() {
             public void run() {
                 last_refresed++;
+                totalTime++;
+
                 TextView item = (TextView) findViewById(R.id.last_refreshed);
                 item.setTypeface(null, Typeface.BOLD);
                 item.setText("Last Updated in " + last_refresed + " Sec");
+
+                TextView countInfo = (TextView) findViewById(R.id.countInfo);
+                countInfo.setTypeface(null, Typeface.BOLD);
+                countInfo.setText(totalTime + " : " + ((totalTime / refreshInSeconds) + 1) + " : " + totalAttemts + " : " + successCount + " : " + failedCount);
+
                 handler.postDelayed(this, 1000);
             }
         };
@@ -114,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
         LoadProps();
         setMonitoringCoinDetails();
         RequestQueue requestQueue = Volley.newRequestQueue(this);
+        totalAttemts++;
         JsonObjectRequest objectRequest = new JsonObjectRequest(
                 Request.Method.GET,
                 "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?CMC_PRO_API_KEY=84a48d89-edce-4e92-8eb4-ea4cb906a37c",
@@ -129,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject reader = new JSONObject(response.toString());
                             JSONArray data = reader.getJSONArray("data");
                             setResponseAfterApiCall(response.toString());
+                            successCount++;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -140,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                         if (debugMode) {
                             Toast.makeText(getApplicationContext(), "Failed", Toast.LENGTH_SHORT).show();
                         }
+                        failedCount++;
                     }
                 }
         );

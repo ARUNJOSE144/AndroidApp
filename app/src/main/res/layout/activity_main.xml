@@ -62,10 +62,20 @@
     <Button
         android:id="@+id/refresh"
         android:layout_width="140dp"
-        android:layout_margin="0dp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/goToCreateCoin"
+        android:layout_margin="0dp"
         android:text="Refresh" />
+
+    <TextView
+        android:id="@+id/countInfo"
+        android:layout_width="184dp"
+        android:layout_height="34dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="-27dp"
+        android:layout_marginBottom="675dp"
+        android:text="" />
 
 
 </RelativeLayout>
