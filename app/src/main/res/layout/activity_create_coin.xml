@@ -14,13 +14,12 @@
         android:layout_above="@+id/textView4"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="140dp"
-        android:layout_toStartOf="@+id/coinName"
         android:text="Coin Name"
         android:textAlignment="center" />
 
     <Spinner
         android:id="@+id/coinSelect"
-        android:layout_width="272dp"
+        android:layout_width="223dp"
         android:layout_height="37dp"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="15dp" />
@@ -32,8 +31,7 @@
         android:layout_above="@+id/textView4"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="78dp"
-        android:layout_toStartOf="@+id/coinName"
-        android:text="TextView"
+        android:text="Min"
         android:textAlignment="center" />
 
 
@@ -41,7 +39,6 @@
         android:id="@+id/coinMinValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/coinName"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="176dp"
@@ -60,8 +57,7 @@
         android:layout_above="@+id/cancelButton"
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="75dp"
-        android:layout_toStartOf="@+id/coinName"
-        android:text="TextView"
+        android:text="Max"
         android:textAlignment="center" />
 
     <EditText
@@ -129,8 +125,8 @@
         android:layout_height="175dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="106dp"
-        android:layout_marginBottom="90dp"
+        android:layout_marginEnd="-4dp"
+        android:layout_marginBottom="189dp"
         android:text="TextView" />
 
 </RelativeLayout>

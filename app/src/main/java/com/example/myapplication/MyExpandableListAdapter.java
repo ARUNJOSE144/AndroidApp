@@ -76,14 +76,20 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
 
             //check for alert
             Double price = Double.parseDouble(coin.getPrice());
-            Double minPrice = Double.parseDouble(coin.getMinPrice());
-            Double maxPrice = Double.parseDouble(coin.getMaxPrice());
-            if (price <= minPrice) {
-                item.setTextColor(Color.RED);
-            } else if (price >= maxPrice) {
-                item.setTextColor(Color.GREEN);
-            }
 
+
+            if (validate(coin.getMinPrice())) {
+                Double minPrice = Double.parseDouble(coin.getMinPrice());
+                if (price <= minPrice) {
+                    item.setTextColor(Color.RED);
+                }
+            }
+            if (validate(coin.getMaxPrice())) {
+                Double maxPrice = Double.parseDouble(coin.getMaxPrice());
+                if (price >= maxPrice) {
+                    item.setTextColor(Color.GREEN);
+                }
+            }
         } else {
             item.setTypeface(null, Typeface.NORMAL);
             item.setTextColor(Color.BLACK);
@@ -120,5 +126,12 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int i, int i1) {
 
         return true;
+    }
+
+    boolean validate(String val) {
+        if (val != null && !val.equalsIgnoreCase("")) {
+            return true;
+        } else
+            return false;
     }
 }

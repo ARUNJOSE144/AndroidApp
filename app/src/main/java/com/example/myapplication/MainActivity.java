@@ -30,6 +30,8 @@ import org.json.JSONObject;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -247,9 +249,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     List<CoinTO> sortList(List<CoinTO> list) {
+
         List<CoinTO> sortedList = new ArrayList<>();
         boolean activeAlert = false;
 
+        Collections.sort(list);
         for (CoinTO coinTO : list) {
             CoinTO monitoringTo = isPresentInMonitoringList(coinTO.getId());
             if (monitoringTo != null) {
@@ -260,10 +264,18 @@ public class MainActivity extends AppCompatActivity {
 
                 //check for alert
                 Double price = Double.parseDouble(coinTO.getPrice());
-                Double minPrice = Double.parseDouble(coinTO.getMinPrice());
-                Double maxPrice = Double.parseDouble(coinTO.getMaxPrice());
-                if (price <= minPrice || price >= maxPrice) {
-                    activeAlert = true;
+
+                if (validate(coinTO.getMinPrice())) {
+                    Double minPrice = Double.parseDouble(coinTO.getMinPrice());
+                    if (price <= minPrice) {
+                        activeAlert = true;
+                    }
+                }
+                if (validate(coinTO.getMaxPrice())) {
+                    Double maxPrice = Double.parseDouble(coinTO.getMaxPrice());
+                    if (price >= maxPrice) {
+                        activeAlert = true;
+                    }
                 }
             } else {
                 coinTO.setMonitoringCoin(false);
@@ -300,6 +312,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    boolean validate(String val) {
+        if (val != null && !val.equalsIgnoreCase("")) {
+            return true;
+        } else
+            return false;
     }
 }
 

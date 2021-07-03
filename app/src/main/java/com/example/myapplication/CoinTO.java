@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-public class CoinTO {
+public class CoinTO implements Comparable<CoinTO> {
     private int id;
     private String name;
     private String symbol;
@@ -118,5 +118,10 @@ public class CoinTO {
                 ", minPrice='" + minPrice + '\'' +
                 ", maxPrice='" + maxPrice + '\'' +
                 '}';
+    }
+
+    @Override
+    public int compareTo(CoinTO coinTO) {
+            return this.getName().compareTo(coinTO.getName());
     }
 }
