@@ -72,7 +72,7 @@ public class MyExpandableListAdapter extends BaseExpandableListAdapter {
         item.setText(coin.getName() + "  -  " + coin.getPrice());
         if (coin.isMonitoringCoin()) {
             item.setTypeface(null, Typeface.BOLD);
-            item.setTextColor(Color.BLACK);
+            item.setTextColor(Color.BLUE);
 
             //check for alert
             Double price = Double.parseDouble(coin.getPrice());

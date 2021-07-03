@@ -118,7 +118,7 @@ public class CreateCoin extends AppCompatActivity {
     public void setDropDownList() {
         dropDownList = new ArrayList<>();
         for (CoinTO coin : MainActivity.coinDetails) {
-            dropDownList.add(coin.getName());
+            dropDownList.add(coin.getName() + " - " + coin.getPrice());
         }
 
     }
