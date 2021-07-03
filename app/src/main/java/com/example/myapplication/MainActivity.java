@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-    int last_refresed = 0, totalAttemts = 0, successCount = 0, failedCount = 0, expectedAttempts = 0, totalTime = 0;
+    int last_refresed = 0, totalAttemts = 0, successCount = 0, failedCount = 0, totalTime = 0;
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
@@ -98,6 +98,11 @@ public class MainActivity extends AppCompatActivity {
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                last_refresed = 0;
+                totalAttemts = 0;
+                successCount = 0;
+                failedCount = 0;
+                totalTime = 0;
                 getDataFromApi();
             }
         });

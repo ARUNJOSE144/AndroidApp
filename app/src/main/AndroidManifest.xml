@@ -15,7 +15,10 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".PropertyActivity"></activity>
         <activity android:name=".CreateCoin" />
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"
+            android:label="Cripto App">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
