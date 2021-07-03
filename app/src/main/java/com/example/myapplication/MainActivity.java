@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
-    List<CoinTO> coinDetails;
+    static List<CoinTO> coinDetails;
     Double DollerInINR = 74.14;
     int refreshInSeconds = 100;
     DBHelper DB;
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
             expandableListView = findViewById(R.id.expanded_menu);
             expandableListAdapter = new MyExpandableListAdapter(this, coinDetails);
             expandableListView.setAdapter(expandableListAdapter);
-            /*expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
                 int lastExpandedPosition = -1;
 
                 @Override
@@ -209,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     lastExpandedPosition = i;
                 }
-            });*/
+            });
 
             expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override

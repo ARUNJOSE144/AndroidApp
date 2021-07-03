@@ -13,12 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".PropertyActivity"></activity>
-        <activity android:name=".CreateCoin" />
+        <activity
+            android:name=".PropertyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".CreateCoin"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
-            android:label="Cripto App">
+            android:label="Cripto App"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

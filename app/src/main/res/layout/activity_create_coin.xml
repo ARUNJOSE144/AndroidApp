@@ -8,58 +8,22 @@
 
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="134dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="70dp"
-        android:layout_marginEnd="21dp"
-        android:layout_marginBottom="642dp"
-        android:layout_toStartOf="@+id/coinId"
-        android:text="Id"
-        android:textAlignment="center" />
-
-    <EditText
-        android:id="@+id/coinId"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="14dp"
-        android:ems="10"
-        android:hint="Id"
-        android:inputType="textPersonName" />
-
-
-    <TextView
         android:id="@+id/textView3"
-        android:layout_width="145dp"
-        android:layout_height="16dp"
-        android:layout_above="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="21dp"
-        android:layout_marginEnd="17dp"
-        android:layout_marginBottom="81dp"
+        android:layout_width="141dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView4"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="140dp"
         android:layout_toStartOf="@+id/coinName"
-        android:text="Name"
+        android:text="Coin Name"
         android:textAlignment="center" />
 
-    <EditText
-        android:id="@+id/coinName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/coinId"
+    <Spinner
+        android:id="@+id/coinSelect"
+        android:layout_width="272dp"
+        android:layout_height="37dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="61dp"
-        android:layout_marginEnd="15dp"
-        android:ems="10"
-        android:hint="Name"
-        android:inputType="textPersonName"
-        android:text="" />
+        android:layout_marginEnd="15dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -143,22 +107,30 @@
         android:id="@+id/updateButton"
         android:layout_width="134dp"
         android:layout_height="58dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="61dp"
-        android:layout_marginBottom="111dp"
+        android:layout_below="@+id/cancelButton"
+        android:layout_marginTop="158dp"
         android:text="Update" />
 
     <Button
         android:id="@+id/deleteButton"
         android:layout_width="wrap_content"
         android:layout_height="59dp"
-        android:layout_alignParentStart="true"
+        android:layout_below="@+id/addButton"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="31dp"
+        android:layout_toEndOf="@+id/updateButton"
+        android:text="Delete" />
+
+    <TextView
+        android:id="@+id/infoView"
+        android:layout_width="248dp"
+        android:layout_height="175dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="234dp"
-        android:layout_marginEnd="38dp"
-        android:layout_marginBottom="114dp"
-        android:text="Delete" />
+        android:layout_marginEnd="106dp"
+        android:layout_marginBottom="90dp"
+        android:text="TextView" />
 
 </RelativeLayout>
